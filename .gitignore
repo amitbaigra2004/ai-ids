@@ -1,0 +1,10 @@
+venv/
+__pycache__/
+*.pyc
+*.pth
+*.pkl
+data/raw/
+data/processed/
+logs/
+.env
+.DS_Store
