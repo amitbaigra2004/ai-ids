@@ -60,37 +60,27 @@ class Flow:
         return (time.time() - self.last_seen) > FLOW_TIMEOUT
 
     def to_dict(self):
-        
-        duration  = max(self.last_seen - self.start_time, 0.001)
-        pkt_count = max(self.packet_count, 1)
+    
+        from preprocessing.feature_engineering import compute_derived_features
 
-        return {
-            
-            "src_ip":            self.src_ip,
-            "dst_ip":            self.dst_ip,
-            "src_port":          self.src_port,
-            "dst_port":          self.dst_port,
-            "protocol":          self.protocol,
+        duration = max(self.last_seen - self.start_time, 0.001)
 
-            
-            "duration":          round(duration, 4),
-
-            "packet_count":      self.packet_count,
-            "byte_count":        self.byte_count,
-
-         
-            "syn_count":         self.syn_count,
-            "ack_count":         self.ack_count,
-            "fin_count":         self.fin_count,
-            "rst_count":         self.rst_count,
-
-         
-            "avg_packet_size":   round(self.byte_count / pkt_count, 2),
-            "packets_per_second":round(self.packet_count / duration, 2),
-            "bytes_per_second":  round(self.byte_count / duration, 2),
-            "syn_ratio":         round(self.syn_count / pkt_count, 4),
-            "rst_ratio":         round(self.rst_count / pkt_count, 4),
+        raw = {
+            "src_ip":       self.src_ip,
+            "dst_ip":       self.dst_ip,
+            "src_port":     self.src_port,
+            "dst_port":     self.dst_port,
+            "protocol":     self.protocol,
+            "duration":     round(duration, 4),
+            "packet_count": self.packet_count,
+            "byte_count":   self.byte_count,
+            "syn_count":    self.syn_count,
+            "ack_count":    self.ack_count,
+            "fin_count":    self.fin_count,
+            "rst_count":    self.rst_count,
         }
+
+        return compute_derived_features(raw)
 
 
 class FlowEngine:
