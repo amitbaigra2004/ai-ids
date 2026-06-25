@@ -1,10 +1,6 @@
-"""
-Manual test script for the rule engine.
-Constructs synthetic flows representing each
-attack pattern and confirms detection works.
-"""
+
 import time
-from rule_engine import RuleEngine
+from .rule_engine import RuleEngine
 
 
 def make_flow(src_ip="10.0.0.99", dst_port=443,
@@ -58,7 +54,7 @@ def test_brute_force():
     engine = RuleEngine()
     attacker_ip = "10.0.0.77"
     result = "BENIGN"
-    # simulate 25 connection attempts to SSH (port 22)
+  
     for i in range(25):
         flow = make_flow(src_ip=attacker_ip, dst_port=22,
                           packet_count=3, syn_ratio=0.5, pps=10.0)
@@ -70,7 +66,7 @@ def test_connection_burst():
     engine = RuleEngine()
     attacker_ip = "10.0.0.88"
     result = "BENIGN"
-    # simulate 110 flows to different normal-looking ports
+   
     for i in range(110):
         flow = make_flow(src_ip=attacker_ip, dst_port=443,
                           packet_count=3, syn_ratio=0.1, pps=5.0)

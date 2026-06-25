@@ -1,11 +1,4 @@
-"""
-Test runner for Day 3.
-Starts sniffer and flow engine together.
-Shows flows completing in real time.
 
-Run with:
-sudo venv/bin/python packet_capture/run_flow_test.py
-"""
 import time
 import threading
 import sys
