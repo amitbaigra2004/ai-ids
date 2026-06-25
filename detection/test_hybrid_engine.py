@@ -1,7 +1,4 @@
-"""
-Test the hybrid engine with synthetic flows
-representing different attack scenarios.
-"""
+
 import sys
 sys.path.insert(0, ".")
 
@@ -35,11 +32,9 @@ if __name__ == "__main__":
 
     engine = HybridEngine()
 
-    # Test 1: normal browsing traffic
     flow = make_flow()
     print_result("Normal HTTPS browsing", engine.analyze(flow))
 
-    # Test 2: SYN flood — rule fires, ML should agree
     flow = make_flow(
         packet_count=500, syn_count=490,
         syn_ratio=0.98, packets_per_second=5000.0,
@@ -49,8 +44,6 @@ if __name__ == "__main__":
     )
     print_result("SYN Flood", engine.analyze(flow))
 
-    # Test 3: port scan — rule fires via stateful window
-    # (single flow won't trigger it, but this tests ML side)
     flow = make_flow(
         packet_count=2, syn_count=1, syn_ratio=0.5,
         duration=0.001, packets_per_second=2000.0,
@@ -61,7 +54,6 @@ if __name__ == "__main__":
     )
     print_result("Single port probe (SSH)", engine.analyze(flow))
 
-    # Test 4: high volume attack traffic
     flow = make_flow(
         packet_count=10000, byte_count=540000,
         avg_packet_size=54.0, packets_per_second=8000.0,
